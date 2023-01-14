@@ -1,0 +1,36 @@
+Descripcion de las vistas:
+
+- layouts:
+	- main.php = Contiene la barra de Navegación para acceder a las vistas del sistema.
+
+- tesis:
+	- _form.php = Formulario para asignar comité tutorial.
+	- _form2.php = Formulario para registrar titulo y objetivos de tesis.
+	- _prueba.php = Html que renderiza oficio de tema de tesis.
+	- create.php = Vista que renderiza _form2 para registrar tema de tesis.
+	- index.php = Vista de todas las tesis registradads.
+	- update.php = Vista que renderiza _form para modificar comité tutorial.
+	- update2.php = Vista que renderiza _form2 para modificar titulo y objetivos (no utilizada).
+	- view.php = Vista para aprobar tesis.
+	- view2.php = Vista estudiante detalles de tesis.
+	- view3.php = Vista de tesis validada.
+	- view4.php = Vista docente de detalles de tesis.
+
+- avance:
+	- _form.php = Formulario para programar fecha y hora.
+	- _form2.php = Formulario para subir archivos.
+	- create.php = Vista que renderiza _form para programar fecha y hora.
+	- index.php = Vista de todas los avances registradads (no utilizada). 
+	- update.php = Vista que renderiza _form para modificar fecha y hora.
+	- update2.php = Vista que renderiza _form2 para modificar archivo.
+	- view.php = Vista de detalles de avance (coordinador, puede modificar fecha y hora).
+	- view2.php = Vista de detalles de avance (alumno, puede subir o modificar archivo).
+	- view3.php = Vista de detalles de avance (docente, puede evaluar).
+
+- calificaciones:
+	- _form.php = Formulario para evaluar.
+	- create.php = Vista que renderiza _form para evaluar.
+	- index.php = Vista que muestra todas las calificaciones (no utilizada).
+	- update.php = Vista que renderiza _form para modificar evaluación.
+	- view.php = Vista que muestra calificaciones de un docente.
+	- view2.php = Vista que muestra tabla con calificaciones del comité.

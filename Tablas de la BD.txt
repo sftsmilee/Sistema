@@ -1,0 +1,174 @@
+-- public.migration definition
+
+-- Drop table
+
+-- DROP TABLE public.migration;
+
+CREATE TABLE public.migration (
+	"version" varchar(180) NOT NULL,
+	apply_time int4 NULL,
+	CONSTRAINT migration_pkey PRIMARY KEY (version)
+);
+
+
+-- public.roles definition
+
+-- Drop table
+
+-- DROP TABLE public.roles;
+
+CREATE TABLE public.roles (
+	id int4 NOT NULL,
+	rol varchar(15) NOT NULL,
+	CONSTRAINT id PRIMARY KEY (id)
+);
+
+
+-- public."user" definition
+
+-- Drop table
+
+-- DROP TABLE public."user";
+
+CREATE TABLE public."user" (
+	id serial4 NOT NULL,
+	username varchar(255) NOT NULL,
+	auth_key varchar(32) NOT NULL,
+	password_hash varchar(255) NOT NULL,
+	password_reset_token varchar(255) NULL,
+	email varchar(255) NOT NULL,
+	status int2 NOT NULL DEFAULT 10,
+	verification_token varchar(255) NULL DEFAULT NULL::character varying,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	rol_id int4 NULL,
+	CONSTRAINT user_email_key UNIQUE (email),
+	CONSTRAINT user_password_reset_token_key UNIQUE (password_reset_token),
+	CONSTRAINT user_pkey PRIMARY KEY (id),
+	CONSTRAINT user_username_key UNIQUE (username),
+	CONSTRAINT user_roles_null_fk FOREIGN KEY (rol_id) REFERENCES public.roles(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+-- public."Docentes" definition
+
+-- Drop table
+
+-- DROP TABLE public."Docentes";
+
+CREATE TABLE public."Docentes" (
+	id serial4 NOT NULL,
+	usuario_id int4 NOT NULL,
+	sni varchar(255) NULL,
+	nombre varchar(255) NULL,
+	apellido_paterno varchar(255) NULL,
+	apellido_materno varchar(255) NULL,
+	genero varchar(20) NULL,
+	direccion varchar(255) NULL,
+	telefono varchar(255) NULL,
+	catedras varchar(255) NULL,
+	tipo_investigador varchar(255) NULL,
+	nivel_academico varchar(255) NULL,
+	puesto varchar(255) NULL,
+	jornada varchar(255) NULL,
+	cursos varchar(255) NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	CONSTRAINT "Docentes_pkey" PRIMARY KEY (id),
+	CONSTRAINT foreign_key_name FOREIGN KEY (usuario_id) REFERENCES public."user"(id)
+);
+
+
+-- public."Estudiantes" definition
+
+-- Drop table
+
+-- DROP TABLE public."Estudiantes";
+
+CREATE TABLE public."Estudiantes" (
+	id serial4 NOT NULL,
+	usuario_id int4 NOT NULL,
+	numero_control varchar(255) NULL,
+	apellido_paterno varchar(255) NULL,
+	apellido_materno varchar(255) NULL,
+	genero varchar(20) NULL,
+	direccion varchar(255) NULL,
+	telefono varchar(255) NULL,
+	nivel_academico varchar(255) NULL,
+	becario varchar(255) NULL,
+	cvu varchar(255) NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	nombre varchar(255) NULL,
+	"Maestria" varchar(255) NULL,
+	CONSTRAINT "Estudiantes_pkey" PRIMARY KEY (id),
+	CONSTRAINT foreign_key_name FOREIGN KEY (usuario_id) REFERENCES public."user"(id)
+);
+
+
+-- public."Tesis" definition
+
+-- Drop table
+
+-- DROP TABLE public."Tesis";
+
+CREATE TABLE public."Tesis" (
+	id serial4 NOT NULL,
+	estudiante_id int4 NULL,
+	titulo varchar(255) NULL,
+	objetivo varchar(500) NULL,
+	director int4 NULL,
+	codirector int4 NULL,
+	secretario int4 NULL,
+	vocal int4 NULL,
+	estado varchar(255) NULL,
+	CONSTRAINT "Tesis_pkey" PRIMARY KEY (id),
+	CONSTRAINT foreign_key_name FOREIGN KEY (estudiante_id) REFERENCES public."Estudiantes"(id),
+	CONSTRAINT foreign_key_name2 FOREIGN KEY (director) REFERENCES public."Docentes"(id),
+	CONSTRAINT foreign_key_name3 FOREIGN KEY (codirector) REFERENCES public."Docentes"(id),
+	CONSTRAINT foreign_key_name4 FOREIGN KEY (secretario) REFERENCES public."Docentes"(id),
+	CONSTRAINT foreign_key_name5 FOREIGN KEY (vocal) REFERENCES public."Docentes"(id)
+);
+
+
+-- public."Avance" definition
+
+-- Drop table
+
+-- DROP TABLE public."Avance";
+
+CREATE TABLE public."Avance" (
+	id serial4 NOT NULL,
+	id_tesis int4 NULL,
+	fechahora timestamp NULL,
+	archivo varchar(50) NULL,
+	CONSTRAINT "Avance_id_key" UNIQUE (id),
+	CONSTRAINT "Avance_pkey" PRIMARY KEY (id),
+	CONSTRAINT "Avance_Tesis_null_fk" FOREIGN KEY (id_tesis) REFERENCES public."Tesis"(id)
+);
+
+
+-- public."Calificaciones" definition
+
+-- Drop table
+
+-- DROP TABLE public."Calificaciones";
+
+CREATE TABLE public."Calificaciones" (
+	id serial4 NOT NULL,
+	id_avance int4 NULL,
+	id_docente int4 NULL,
+	tipo varchar(15) NULL,
+	p1 int4 NOT NULL,
+	p2 int4 NOT NULL,
+	p3 int4 NOT NULL,
+	p4 int4 NOT NULL,
+	p5 int4 NOT NULL,
+	p6 int4 NOT NULL,
+	p7 int4 NOT NULL,
+	p8 int4 NOT NULL,
+	CONSTRAINT "Calificaciones_id_key" UNIQUE (id),
+	CONSTRAINT "Calificaciones_pkey" PRIMARY KEY (id),
+	CONSTRAINT "Calificaciones_Avance_null_fk" FOREIGN KEY (id_avance) REFERENCES public."Avance"(id),
+	CONSTRAINT "Calificaciones_Docentes_id_fk" FOREIGN KEY (id_docente) REFERENCES public."Docentes"(id)
+);
